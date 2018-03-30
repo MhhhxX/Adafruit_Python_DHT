@@ -103,8 +103,15 @@ def pi_version():
         # Pi 2
         return 2
     elif match.group(1) == 'BCM2835':
-        # Pi 3
-        return 3
+    	# Match a line like 'processor   : 0'
+        cpu_amount = re.findall('^processor\s+:\s+(\d+)$', cpuinfo,
+                                flags=re.MULTILINE | re.IGNORECASE).__len__()
+        # Pi 3 has 4 processors, Pi Zero only 1
+        if cpu_amount > 1:
+            # Pi 3
+            return 3
+        # Pi Zero (W/WH)
+        return 1
     elif match.group(1) == 'BCM2837':
         # Pi 3b+
         return 3
